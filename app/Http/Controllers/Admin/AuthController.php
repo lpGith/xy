@@ -37,7 +37,7 @@ class AuthController extends Controller
     {
         $cookie = $request->cookie('login_token');
 
-        if (empty($cookie) === false || empty(session('user')) === false) {
+        if (empty($cookie) === false or empty(session('user')) === false) {
             $user = User::find($cookie['user_id']);
             session_user($user);
 
