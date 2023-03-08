@@ -22,8 +22,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 
 
 class AuthController extends Controller
@@ -35,14 +35,15 @@ class AuthController extends Controller
      */
     public function index(Request $request): View|Factory|Redirector|Application|RedirectResponse
     {
-        $cookie = $request->cookie('login_token');
 
-        if (empty($cookie) === false or empty(session('user')) === false) {
-            $user = User::find($cookie['user_id']);
-            session_user($user);
-
-            return redirect('admin/qh');
-        }
+//        $cookie = $request->cookie('login_token');
+//
+//        if (empty($cookie) === false or empty(session('user')) === false) {
+//            $user = User::find($cookie['user_id']);
+//            session_user($user);
+//
+//            return redirect('admin/qh');
+//        }
 
         return view('admin.login');
     }
@@ -57,27 +58,23 @@ class AuthController extends Controller
     {
         try {
 
-            $data = $request->all();
-            $password = $data['password'];
-            $email = $data['email'];
-
             $user = User::where([
-                'email' => $email,
-                'password' => bcrypt($password),
+                'email' => $request->email,
+                'password' => md5($request->password),
             ])->firstOrFail();
 
             $is_remember = $request->input('remember');
 
             session_user($user);
 
-            if (strcasecmp($is_remember, 'on') === 0) {
+            if (!empty($is_remember)) {
                 cookie_user($user);
             }
 
             return redirect('admin/qh');
         } catch (\Exception $exception) {
             Log::error('login-error', [$exception->getMessage()]);
-            return redirect('admin/login');
+            return redirect('admin/login')->withErrors('账号或密码错误');
         }
     }
 
@@ -90,7 +87,7 @@ class AuthController extends Controller
         session()->flush();
         cookie_user(null, true);
 
-        return redirect('login')->with('success', '退出成功');
+        return redirect('admin/login')->with('success', '退出成功');
     }
 
 }

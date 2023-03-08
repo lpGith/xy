@@ -22,7 +22,7 @@ class TestTransformer extends TransformerAbstract
     public function transform(Test $model)
     {
         return [
-            'id'         => (int) $model->id,
+            'id' => (int)$model->id,
 
             /* place your other model properties here */
 

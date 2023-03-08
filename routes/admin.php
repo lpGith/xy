@@ -22,20 +22,11 @@ use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Home\HomeController;
-use App\Http\Controllers\Home\ArticleController as HomeArticleController;
-use App\Http\Controllers\Home\CategoryController as HomeCategoryController;
-use App\Http\Controllers\Home\SearchController;
-use App\Http\Controllers\Home\TagController as HomeTagController;
-use App\Http\Controllers\Home\PageController as HomePageController;
-use App\Http\Controllers\Home\CommentController as HomeCommentController;
-use App\Http\Controllers\PagesController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('admin:qinghe')->group(function () {
-    Route::get('login', [AuthController::class, 'index'])->name('admin:qinghe')->withoutMiddleware('web');
-    Route::post('login', [AuthController::class, 'login'])->name('admin.login');
+    Route::get('login', [AuthController::class, 'index'])->name('admin:index')->withoutMiddleware('admin:qinghe');
+    Route::post('login', [AuthController::class, 'login'])->name('admin.login')->withoutMiddleware('admin:qinghe');
     Route::get('qh', [AdminController::class, 'index'])->name('admin.home');
     Route::get('logout', [AuthController::class, 'logout'])->name('admin.logout');
 

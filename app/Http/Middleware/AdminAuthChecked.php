@@ -18,10 +18,12 @@ class AdminAuthChecked
      */
     public function handle(Request $request, Closure $next)
     {
+
         if (!empty(session_user())) {
             return $next($request);
         }
 
-        return redirect('admin/login')->withErrors('请先登录');
+        dd(session_user());
+//        return redirect('admin/login')->withErrors('请先登录');
     }
 }
