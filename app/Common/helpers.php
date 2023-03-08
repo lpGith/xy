@@ -64,7 +64,7 @@ if (!function_exists('cookie_user')) {
      * @Time 2023/3/3 14:22
      * @author qinghe
      * */
-    function cookie_user(User $user = null, $isExpired = false)
+    function cookie_user(User $user = null, $isExpired = false): ?User
     {
         if ($isExpired) {
             $cookie = cookie('login_token', '', 60 * 24 * 30 * -1);
