@@ -4,8 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class AdminAuthChecked
 {
@@ -23,7 +21,6 @@ class AdminAuthChecked
             return $next($request);
         }
 
-        dd(session_user());
-//        return redirect('admin/login')->withErrors('请先登录');
+        return redirect('admin/login')->withErrors('请先登录');
     }
 }
